@@ -1,0 +1,12 @@
+{
+  "programData": {
+    "logo": "https://spc.radiouas.org/img/alexa/skill.png",
+    "background": "https://spc.radiouas.org/img/alexa/bg.jpg",
+    "stationName": "RADIO UAS",
+    "stationSlogan": "Frecuencia de la cultura viva",
+    "program": "La Montaña Sagrada",
+    "production": "Roberto Fernandez",
+    "ptn": "Rock",
+    "isLive": true
+  }
+}

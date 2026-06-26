@@ -1,0 +1,234 @@
+{
+  "type": "APL",
+  "version": "2023.3",
+  "theme": "dark",
+  "import": [
+    {
+      "name": "alexa-layouts",
+      "version": "1.7.0"
+    },
+    {
+      "name": "alexa-icon",
+      "version": "1.0.0"
+    }
+  ],
+  "resources": [
+    {
+      "colors": {
+        "redAccent": "#e94560",
+        "overlay": "rgba(0,0,0,0.55)",
+        "white": "#FFFFFF",
+        "white07": "rgba(255,255,255,0.7)",
+        "white08": "rgba(255,255,255,0.08)",
+        "ptnBlue": "rgba(15,52,96,0.5)",
+        "ptnBlueBorder": "rgba(15,52,96,0.8)"
+      }
+    }
+  ],
+  "styles": {
+    "baseText": {
+      "values": [
+        {
+          "fontFamily": "Amazon Ember Display",
+          "color": "@white"
+        }
+      ]
+    },
+    "stationText": {
+      "extend": "baseText",
+      "values": [
+        {
+          "fontSize": 15,
+          "letterSpacing": 3,
+          "opacity": 0.35,
+          "fontWeight": "500",
+          "textTransform": "upper-case"
+        }
+      ]
+    },
+    "programText": {
+      "extend": "baseText",
+      "values": [
+        {
+          "fontSize": 56,
+          "fontWeight": "700",
+          "textAlign": "center"
+        }
+      ]
+    },
+    "productionText": {
+      "extend": "baseText",
+      "values": [
+        {
+          "fontSize": 24,
+          "fontWeight": "400",
+          "opacity": 0.55
+        }
+      ]
+    },
+    "ptnBadgeText": {
+      "values": [
+        {
+          "fontFamily": "Amazon Ember Display",
+          "color": "@white07",
+          "fontSize": 12,
+          "fontWeight": "600",
+          "letterSpacing": 2,
+          "textTransform": "upper-case"
+        }
+      ]
+    },
+    "liveBadgeText": {
+      "extend": "baseText",
+      "values": [
+        {
+          "fontSize": 12,
+          "fontWeight": "700",
+          "color": "@white",
+          "letterSpacing": 1.5,
+          "textTransform": "upper-case"
+        }
+      ]
+    }
+  },
+  "mainTemplate": {
+    "parameters": [
+      "programData"
+    ],
+    "items": {
+      "type": "Container",
+      "width": "100%",
+      "height": "100%",
+      "items": [
+        {
+          "type": "Image",
+          "width": "100%",
+          "height": "100%",
+          "source": "${programData.background}",
+          "scale": "fill",
+          "position": "absolute",
+          "left": 0,
+          "top": 0
+        },
+        {
+          "type": "Frame",
+          "width": "100%",
+          "height": "100%",
+          "position": "absolute",
+          "left": 0,
+          "top": 0,
+          "backgroundColor": "@overlay"
+        },
+        {
+          "type": "Frame",
+          "position": "absolute",
+          "top": 10,
+          "right": 12,
+          "paddingLeft": 14,
+          "paddingRight": 14,
+          "paddingTop": 5,
+          "paddingBottom": 5,
+          "backgroundColor": "@redAccent",
+          "borderRadius": 6,
+          "item": {
+            "type": "Text",
+            "style": "liveBadgeText",
+            "text": "LIVE"
+          }
+        },
+        {
+          "type": "Container",
+          "width": "100%",
+          "grow": 1,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "spacing": 8,
+          "paddingTop": 40,
+          "items": [
+            {
+              "type": "Image",
+              "width": 100,
+              "height": 100,
+              "source": "${programData.logo}",
+              "scale": "fill",
+              "borderRadius": 50,
+              "alignSelf": "center",
+              "borderColor": "@white08",
+              "borderWidth": 2
+            },
+            {
+              "type": "Text",
+              "style": "stationText",
+              "text": "${programData.stationName} · ${programData.stationSlogan}",
+              "alignSelf": "center",
+              "paddingTop": 6
+            },
+            {
+              "type": "Text",
+              "style": "programText",
+              "text": "${programData.program}",
+              "alignSelf": "center",
+              "paddingTop": 14,
+              "maxWidth": "85%"
+            },
+            {
+              "type": "Text",
+              "style": "productionText",
+              "text": "${programData.production}",
+              "alignSelf": "center",
+              "paddingTop": 8,
+              "paddingBottom": 10
+            },
+            {
+              "type": "Frame",
+              "backgroundColor": "@ptnBlue",
+              "borderColor": "@ptnBlueBorder",
+              "borderWidth": 1,
+              "borderRadius": 60,
+              "paddingLeft": 18,
+              "paddingRight": 18,
+              "paddingTop": 5,
+              "paddingBottom": 5,
+              "alignSelf": "center",
+              "item": {
+                "type": "Text",
+                "style": "ptnBadgeText",
+                "text": "${programData.ptn}"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "width": "100%",
+          "paddingBottom": 30,
+          "paddingTop": 10,
+          "alignItems": "center",
+          "justifyContent": "center",
+          "items": [
+            {
+              "type": "Container",
+              "direction": "row",
+              "spacing": 24,
+              "alignItems": "center",
+              "justifyContent": "center",
+              "items": [
+                {
+                  "type": "AlexaButton",
+                  "buttonText": "Radio",
+                  "buttonIconName": "ic_play",
+                  "buttonStyle": "primary"
+                },
+                {
+                  "type": "AlexaButton",
+                  "buttonText": "TV",
+                  "buttonIconName": "ic_tv"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

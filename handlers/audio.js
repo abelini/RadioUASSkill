@@ -1,6 +1,7 @@
 const Alexa = require('ask-sdk-core');
 const { AUDIO_DATA, RADIO_NAME, RADIO_SLOGAN } = require('../config');
 const { fetchNowPlaying } = require('../api');
+const { supportsAPL, buildAPLDirective } = require('../utils');
 
 const PlayAudioIntentHandler = {
     canHandle(handlerInput) {
@@ -9,19 +10,45 @@ const PlayAudioIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.ResumeIntent');
     },
     async handle(handlerInput) {
+        const useAPL = supportsAPL(handlerInput);
+        const logo = AUDIO_DATA.metadata.art.sources[0].url;
+        const bg = AUDIO_DATA.metadata.backgroundImage.sources[0].url;
+
         try {
             const data = await fetchNowPlaying();
-            return handlerInput.responseBuilder
+            const builder = handlerInput.responseBuilder
                 .speak(`Sintonizando ${data.programa} en ${RADIO_NAME}`)
-                .addAudioPlayerPlayDirective('REPLACE_ALL', AUDIO_DATA.url, AUDIO_DATA.token, 0, null, AUDIO_DATA.metadata)
-                .withStandardCard(RADIO_NAME, `Sintonizando ${data.programa}`, AUDIO_DATA.metadata.art.sources[0].url)
-                .getResponse();
+                .addAudioPlayerPlayDirective('REPLACE_ALL', AUDIO_DATA.url, AUDIO_DATA.token, 0, null, AUDIO_DATA.metadata);
+
+            if (useAPL) {
+                builder.addDirective(buildAPLDirective({
+                    logo, background: bg,
+                    stationName: RADIO_NAME, stationSlogan: RADIO_SLOGAN,
+                    program: data.programa, production: data.produccion,
+                    ptn: data.ptn || '', isLive: true
+                }));
+            } else {
+                builder.withStandardCard(RADIO_NAME, `Sintonizando ${data.programa}`, logo);
+            }
+
+            return builder.getResponse();
         } catch {
-            return handlerInput.responseBuilder
+            const builder = handlerInput.responseBuilder
                 .speak(`Sintonizando ${RADIO_NAME}`)
-                .addAudioPlayerPlayDirective('REPLACE_ALL', AUDIO_DATA.url, AUDIO_DATA.token, 0, null, AUDIO_DATA.metadata)
-                .withStandardCard(RADIO_NAME, RADIO_SLOGAN, AUDIO_DATA.metadata.art.sources[0].url)
-                .getResponse();
+                .addAudioPlayerPlayDirective('REPLACE_ALL', AUDIO_DATA.url, AUDIO_DATA.token, 0, null, AUDIO_DATA.metadata);
+
+            if (useAPL) {
+                builder.addDirective(buildAPLDirective({
+                    logo, background: bg,
+                    stationName: RADIO_NAME, stationSlogan: RADIO_SLOGAN,
+                    program: RADIO_NAME, production: RADIO_SLOGAN,
+                    ptn: '', isLive: true
+                }));
+            } else {
+                builder.withStandardCard(RADIO_NAME, RADIO_SLOGAN, logo);
+            }
+
+            return builder.getResponse();
         }
     },
 };
