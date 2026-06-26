@@ -1,0 +1,14 @@
+{
+  "name": "radiouas-skill",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild index.js --bundle --platform=node --outfile=bundle.js --external:ask-sdk-core"
+  },
+  "dependencies": {
+    "ask-sdk-core": "^2.14.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
