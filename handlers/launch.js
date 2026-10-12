@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk-core');
 const { AUDIO_DATA, RADIO_NAME, RADIO_SLOGAN } = require('../config');
-const { fetchNowPlaying } = require('../api');
+const { fetchScheduleSnapshot } = require('../api');
 const { supportsAPL, buildAPLDirective } = require('../utils');
 
 const LaunchRequestHandler = {
@@ -12,42 +12,26 @@ const LaunchRequestHandler = {
         const logo = AUDIO_DATA.metadata.art.sources[0].url;
         const bg = AUDIO_DATA.metadata.backgroundImage.sources[0].url;
 
-        try {
-            const data = await fetchNowPlaying();
-            const builder = handlerInput.responseBuilder
-                .speak(`Bienvenido a ${RADIO_NAME}. Ahora suena ${data.programa}. ¿Quieres escuchar la radio o ver la transmisión de video?`)
-                .reprompt('Puedes decirme: pon la radio, o, pon el video.');
+        const { now, upNext, online, errorText } = await fetchScheduleSnapshot();
+        const next = upNext[0] && upNext[0].name !== now.name ? upNext[0].name : null;
 
-            if (useAPL) {
-                builder.addDirective(buildAPLDirective({
-                    logo, background: bg,
-                    stationName: RADIO_NAME, stationSlogan: RADIO_SLOGAN,
-                    program: data.programa, production: data.produccion,
-                    ptn: data.ptn || '', isLive: true
-                }));
-            } else {
-                builder.withStandardCard(RADIO_NAME, `Ahora suena ${data.programa}`, logo);
-            }
+        const builder = handlerInput.responseBuilder
+            .speak(next
+                ? `Bienvenido a ${RADIO_NAME}. Ahora suena ${now.name}. A continuación, ${next}. ¿Quieres escuchar la radio o ver la transmisión de video?`
+                : `Bienvenido a ${RADIO_NAME}. Ahora suena ${now.name}. ¿Quieres escuchar la radio o ver la transmisión de video?`)
+            .reprompt('Puedes decirme: pon la radio, o, pon el video.');
 
-            return builder.getResponse();
-        } catch {
-            const builder = handlerInput.responseBuilder
-                .speak(`Bienvenido a ${RADIO_NAME}. ¿Quieres escuchar la radio o ver la transmisión de video?`)
-                .reprompt('Puedes decirme: pon la radio, o, pon el video.');
-
-            if (useAPL) {
-                builder.addDirective(buildAPLDirective({
-                    logo, background: bg,
-                    stationName: RADIO_NAME, stationSlogan: RADIO_SLOGAN,
-                    program: RADIO_NAME, production: RADIO_SLOGAN,
-                    ptn: '', isLive: true
-                }));
-            } else {
-                builder.withStandardCard(RADIO_NAME, RADIO_SLOGAN, logo);
-            }
-
-            return builder.getResponse();
+        if (useAPL) {
+            builder.addDirective(buildAPLDirective({
+                logo, background: bg,
+                stationName: RADIO_NAME, stationSlogan: RADIO_SLOGAN,
+                now, upNext, isLive: true, online, errorText, playing: false
+            }));
+        } else {
+            builder.withStandardCard(RADIO_NAME, `Ahora suena ${now.name}`, now.image || logo);
         }
+
+        return builder.getResponse();
     },
 };
 

@@ -11,12 +11,26 @@ function supportsAPL(handlerInput) {
     return supportedInterfaces['Alexa.Presentation.APL'];
 }
 
+function upper(value) {
+    return value ? String(value).toUpperCase() : value;
+}
+
 function buildAPLDirective(programData) {
+    const data = {
+        ...programData,
+        stationName: upper(programData.stationName),
+        stationSlogan: upper(programData.stationSlogan),
+        now: {
+            ...programData.now,
+            category: upper(programData.now.category)
+        }
+    };
+
     return {
         type: 'Alexa.Presentation.APL.RenderDocument',
-        token: 'apl-radio-uas-skill',
+        token: 'apl-radio-uas-skill-v2',
         document: aplDocument,
-        datasources: { programData }
+        datasources: { programData: data }
     };
 }
 

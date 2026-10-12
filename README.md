@@ -6,8 +6,8 @@ Skill de Alexa para **Radio Universidad Autónoma de Sinaloa**. Transmite audio 
 
 ```
 ├── index.js          # Entry point (registro de handlers)
-├── config.js         # Constantes: URLs, metadatos, RADIO_NAME, RADIO_SLOGAN
-├── api.js            # Cliente HTTP para la API de programación
+├── config.js         # Constantes: URLs, metadatos, timezone, mapas slug→icono, fallback
+├── api.js            # Cliente de parrilla diaria + resolución de programa al aire / siguientes
 ├── utils.js          # Función supportsVideo()
 ├── handlers/
 │   ├── launch.js     # Bienvenida con programa actual
@@ -50,8 +50,26 @@ Genera `bundle.js` — copia el contenido y pégalo en la consola de Alexa Devel
 
 ## API
 
-El skill consulta `spc.radiouas.org/api/schedule/now` para obtener el programa actual. Si la API falla, el skill funciona sin ella con mensajes genéricos.
+El skill consulta la parrilla diaria en:
+
+```
+GET https://spc.radiouas.org/api/schedule/daily?day={N}
+```
+
+`N` = día de la semana (`1` lunes … `7` domingo). Devuelve un arreglo de programas con
+`name`, `producer`, `host`, `image`, `slug`, `startTime`, `endTime`, `PTY`, `PTN`, `SM`,
+`music`, `ID`, `durationMinutes`.
+
+El skill determina el programa **al aire ahora** y **los siguientes 2** comparando la hora
+local de **Sinaloa / Mazatlán (UTC-7 fijo)** contra `startTime`/`endTime`. Los huecos de la
+parrilla y los fallos de API se rellenan con un programa *fallback*.
+
+> `PTN` se ignora (información exclusiva de sistemas RBDS). El campo `slug` se usa como
+> keyword de categoría y se mapea a un icono nativo de APL (`SLUG_ICONS` en `config.js`).
 
 ## Dispositivos con pantalla
 
-Muestra una **Standard Card** con el nombre del programa actual y el logo de Radio UAS.
+- **APL**: cover del programa actual como protagonista (izquierda) + info a la derecha
+  (categoría con icono, producción, conducción, horario) y franja **"A continuación"** con
+  los 2 programas siguientes.
+- **Standard Card**: nombre del programa actual con su cover.

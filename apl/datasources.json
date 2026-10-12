@@ -3,10 +3,30 @@
     "logo": "https://spc.radiouas.org/img/alexa/skill.png",
     "background": "https://spc.radiouas.org/img/alexa/bg.jpg",
     "stationName": "RADIO UAS",
-    "stationSlogan": "Frecuencia de la cultura viva",
-    "program": "La Montaña Sagrada",
-    "production": "Roberto Fernandez",
-    "ptn": "Rock",
+    "stationSlogan": "FRECUENCIA DE LA CULTURA VIVA",
+    "now": {
+      "name": "Punto universitario",
+      "producer": "Wilfrido Ibarra Escobar",
+      "host": "Wilfrido Ibarra, Álvaro Aragón, José Luis López y Jorge Ramos",
+      "image": "https://assets.radiouas.org/covers/programme-cover-17.jpeg",
+      "slug": "journal",
+      "icon": "ic_news",
+      "category": "PERIODISMO",
+      "startTime": "07:50",
+      "endTime": "09:00"
+    },
+    "upNext": [
+      {
+        "name": "Paisajes sonoros",
+        "image": "https://assets.radiouas.org/covers/programme-cover-99.jpeg",
+        "startTime": "09:00"
+      },
+      {
+        "name": "Muévelos: cuerpo, mente y corazón",
+        "image": "https://assets.radiouas.org/covers/programme-cover-36.jpeg",
+        "startTime": "09:30"
+      }
+    ],
     "isLive": true
   }
 }

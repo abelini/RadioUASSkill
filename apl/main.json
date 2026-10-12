@@ -16,77 +16,108 @@
     {
       "colors": {
         "redAccent": "#e94560",
-        "overlay": "rgba(0,0,0,0.55)",
+        "overlay": "rgba(0,0,0,0.35)",
+        "cardBg": "rgba(255,255,255,0.15)",
+        "cardBorder": "rgba(255,255,255,0.45)",
         "white": "#FFFFFF",
-        "white07": "rgba(255,255,255,0.7)",
-        "white08": "rgba(255,255,255,0.08)",
-        "ptnBlue": "rgba(15,52,96,0.5)",
-        "ptnBlueBorder": "rgba(15,52,96,0.8)"
+        "white85": "rgba(255,255,255,0.85)",
+        "white75": "rgba(255,255,255,0.75)",
+        "white40": "rgba(255,255,255,0.4)",
+        "white38": "rgba(255,255,255,0.38)"
       }
     }
   ],
   "styles": {
-    "baseText": {
+    "stationText": {
       "values": [
         {
-          "fontFamily": "Amazon Ember Display",
+          "fontSize": 14,
+          "fontWeight": "500",
+          "letterSpacing": 3,
+          "color": "@white40"
+        }
+      ]
+    },
+    "nowName": {
+      "values": [
+        {
+          "fontSize": 50,
+          "fontWeight": "700",
           "color": "@white"
         }
       ]
     },
-    "stationText": {
-      "extend": "baseText",
+    "categoryText": {
       "values": [
         {
-          "fontSize": 15,
-          "letterSpacing": 3,
-          "opacity": 0.35,
-          "fontWeight": "500",
-          "textTransform": "upper-case"
-        }
-      ]
-    },
-    "programText": {
-      "extend": "baseText",
-      "values": [
-        {
-          "fontSize": 56,
-          "fontWeight": "700",
-          "textAlign": "center"
-        }
-      ]
-    },
-    "productionText": {
-      "extend": "baseText",
-      "values": [
-        {
-          "fontSize": 24,
-          "fontWeight": "400",
-          "opacity": 0.55
-        }
-      ]
-    },
-    "ptnBadgeText": {
-      "values": [
-        {
-          "fontFamily": "Amazon Ember Display",
-          "color": "@white07",
-          "fontSize": 12,
+          "fontSize": 14,
           "fontWeight": "600",
           "letterSpacing": 2,
-          "textTransform": "upper-case"
+          "color": "@white75"
         }
       ]
     },
-    "liveBadgeText": {
-      "extend": "baseText",
+    "metaLabel": {
+      "values": [
+        {
+          "fontSize": 17,
+          "fontWeight": "600",
+          "color": "@white38"
+        }
+      ]
+    },
+    "metaValue": {
+      "values": [
+        {
+          "fontSize": 17,
+          "color": "@white85"
+        }
+      ]
+    },
+    "upNextHeading": {
       "values": [
         {
           "fontSize": 12,
           "fontWeight": "700",
-          "color": "@white",
+          "letterSpacing": 3,
+          "color": "@white40"
+        }
+      ]
+    },
+    "cardName": {
+      "values": [
+        {
+          "fontSize": 16,
+          "fontWeight": "600",
+          "color": "@white"
+        }
+      ]
+    },
+    "cardTime": {
+      "values": [
+        {
+          "fontSize": 13,
+          "fontWeight": "600",
+          "color": "@redAccent"
+        }
+      ]
+    },
+    "liveBadge": {
+      "values": [
+        {
+          "fontSize": 12,
+          "fontWeight": "700",
           "letterSpacing": 1.5,
-          "textTransform": "upper-case"
+          "color": "@white"
+        }
+      ]
+    },
+    "buttonText": {
+      "values": [
+        {
+          "fontSize": 16,
+          "fontWeight": "500",
+          "color": "@white"
         }
       ]
     }
@@ -99,135 +130,432 @@
       "type": "Container",
       "width": "100%",
       "height": "100%",
+      "direction": "column",
       "items": [
-        {
-          "type": "Image",
-          "width": "100%",
-          "height": "100%",
-          "source": "${programData.background}",
-          "scale": "fill",
-          "position": "absolute",
-          "left": 0,
-          "top": 0
-        },
-        {
-          "type": "Frame",
-          "width": "100%",
-          "height": "100%",
-          "position": "absolute",
-          "left": 0,
-          "top": 0,
-          "backgroundColor": "@overlay"
-        },
-        {
-          "type": "Frame",
-          "position": "absolute",
-          "top": 10,
-          "right": 12,
-          "paddingLeft": 14,
-          "paddingRight": 14,
-          "paddingTop": 5,
-          "paddingBottom": 5,
-          "backgroundColor": "@redAccent",
-          "borderRadius": 6,
-          "item": {
-            "type": "Text",
-            "style": "liveBadgeText",
-            "text": "LIVE"
+      {
+        "type": "Image",
+        "width": "100%",
+        "height": "100%",
+        "position": "absolute",
+        "left": 0,
+        "top": 0,
+        "source": "${programData.now.image}",
+        "scale": "fill",
+        "filters": [
+          {
+            "type": "Blur",
+            "radius": "18dp"
           }
-        },
-        {
-          "type": "Container",
-          "width": "100%",
-          "grow": 1,
-          "justifyContent": "center",
-          "alignItems": "center",
-          "spacing": 8,
-          "paddingTop": 40,
-          "items": [
-            {
-              "type": "Image",
-              "width": 100,
-              "height": 100,
-              "source": "${programData.logo}",
-              "scale": "fill",
-              "borderRadius": 50,
-              "alignSelf": "center",
-              "borderColor": "@white08",
-              "borderWidth": 2
-            },
-            {
-              "type": "Text",
-              "style": "stationText",
-              "text": "${programData.stationName} · ${programData.stationSlogan}",
-              "alignSelf": "center",
-              "paddingTop": 6
-            },
-            {
-              "type": "Text",
-              "style": "programText",
-              "text": "${programData.program}",
-              "alignSelf": "center",
-              "paddingTop": 14,
-              "maxWidth": "85%"
-            },
-            {
-              "type": "Text",
-              "style": "productionText",
-              "text": "${programData.production}",
-              "alignSelf": "center",
-              "paddingTop": 8,
-              "paddingBottom": 10
-            },
-            {
-              "type": "Frame",
-              "backgroundColor": "@ptnBlue",
-              "borderColor": "@ptnBlueBorder",
-              "borderWidth": 1,
-              "borderRadius": 60,
-              "paddingLeft": 18,
-              "paddingRight": 18,
-              "paddingTop": 5,
-              "paddingBottom": 5,
-              "alignSelf": "center",
-              "item": {
-                "type": "Text",
-                "style": "ptnBadgeText",
-                "text": "${programData.ptn}"
+        ],
+        "overlayColor": "rgba(0,0,0,0.5)"
+      },
+      {
+        "type": "Frame",
+        "width": "100%",
+        "height": "100%",
+        "position": "absolute",
+        "left": 0,
+        "top": 0,
+        "backgroundColor": "@overlay"
+      },
+      {
+        "type": "Container",
+        "width": "100%",
+        "height": "100%",
+        "direction": "column",
+        "paddingLeft": "40dp",
+        "paddingRight": "40dp",
+        "paddingTop": "48dp",
+        "paddingBottom": "52dp",
+        "items": [
+          {
+            "type": "Container",
+            "direction": "row",
+            "width": "100%",
+            "grow": 1,
+            "spacing": "32dp",
+            "alignItems": "center",
+            "items": [
+              {
+                "type": "Image",
+                "width": "32vw",
+                "height": "32vw",
+                "source": "${programData.now.image}",
+                "scale": "fill",
+                "borderRadius": 20,
+                "borderColor": "@cardBorder",
+                "borderWidth": 1
+              },
+              {
+                "type": "Container",
+                "direction": "column",
+                "grow": 1,
+                "shrink": 1,
+                "spacing": "6dp",
+                "items": [
+                  {
+                    "type": "Text",
+                    "style": "stationText",
+                    "text": "${programData.stationName} · ${programData.stationSlogan}",
+                    "maxLines": 1
+                  },
+                  {
+                    "type": "Text",
+                    "style": "nowName",
+                    "text": "${programData.now.name}",
+                    "maxLines": 2,
+                    "paddingTop": "4dp"
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "spacing": "16dp",
+                    "alignItems": "center",
+                    "paddingTop": "10dp",
+                    "items": [
+                      {
+                        "type": "AlexaIcon",
+                        "iconName": "${programData.now.icon}",
+                        "iconColor": "@white75",
+                        "iconSize": 20
+                      },
+                      {
+                        "type": "Text",
+                        "style": "categoryText",
+                        "text": "${programData.now.category}",
+                        "paddingStart": "8dp"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "spacing": "10dp",
+                    "alignItems": "center",
+                    "paddingTop": "16dp",
+                    "when": "${programData.now.producer}",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "style": "metaLabel",
+                        "text": "PRODUCCIÓN:",
+                        "width": "120dp"
+                      },
+                      {
+                        "type": "Text",
+                        "style": "metaValue",
+                        "text": "${programData.now.producer}",
+                        "maxLines": 1
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "spacing": "10dp",
+                    "alignItems": "center",
+                    "paddingTop": "4dp",
+                    "when": "${programData.now.endTime}",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "style": "metaLabel",
+                        "text": "HORARIO:",
+                        "width": "120dp"
+                      },
+                      {
+                        "type": "Text",
+                        "style": "metaValue",
+                        "text": "${programData.now.startTime} – ${programData.now.endTime}"
+                      }
+                    ]
+                  }
+                ]
               }
-            }
-          ]
-        },
-        {
-          "type": "Container",
-          "width": "100%",
-          "paddingBottom": 30,
-          "paddingTop": 10,
-          "alignItems": "center",
-          "justifyContent": "center",
-          "items": [
-            {
-              "type": "Container",
-              "direction": "row",
-              "spacing": 24,
-              "alignItems": "center",
-              "justifyContent": "center",
-              "items": [
-                {
-                  "type": "AlexaButton",
-                  "buttonText": "Radio",
-                  "buttonIconName": "ic_play",
-                  "buttonStyle": "primary"
-                },
-                {
-                  "type": "AlexaButton",
-                  "buttonText": "TV",
-                  "buttonIconName": "ic_tv"
+            ]
+          },
+          {
+            "type": "Container",
+            "direction": "column",
+            "width": "100%",
+            "paddingTop": "12dp",
+            "when": "${programData.upNext.length > 0}",
+            "items": [
+              {
+                "type": "Text",
+                "style": "upNextHeading",
+                "text": "A CONTINUACIÓN",
+                "paddingTop": "4dp",
+                "paddingBottom": "16dp"
+              },
+              {
+                "type": "Container",
+                "direction": "row",
+                "width": "100%",
+                "alignItems": "stretch",
+                "items": [
+                  {
+                    "type": "Container",
+                    "width": "50%",
+                    "paddingEnd": "7dp",
+                    "item": {
+                      "type": "Frame",
+                      "width": "100%",
+                      "backgroundColor": "@cardBg",
+                      "borderColor": "@cardBorder",
+                      "borderWidth": 2,
+                      "borderRadius": 12,
+                      "paddingLeft": "9dp",
+                      "paddingRight": "9dp",
+                      "paddingTop": "9dp",
+                      "paddingBottom": "9dp",
+                      "item": {
+                        "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
+                        "items": [
+                          {
+                            "type": "Image",
+                            "width": 64,
+                            "height": 64,
+                            "source": "${programData.upNext[0].image}",
+                            "scale": "fill",
+                            "borderRadius": 9
+                          },
+                          {
+                            "type": "Container",
+                            "direction": "column",
+                            "grow": 1,
+                            "shrink": 1,
+                            "paddingStart": "12dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "style": "cardName",
+                                "text": "${programData.upNext[0].name}",
+                                "maxLines": 2
+                              },
+                              {
+                                "type": "Text",
+                                "style": "cardTime",
+                                "text": "${programData.upNext[0].startTime}",
+                                "when": "${programData.upNext[0].startTime}",
+                                "paddingTop": "4dp"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "Container",
+                    "width": "50%",
+                    "paddingStart": "7dp",
+                    "when": "${programData.upNext[1]}",
+                    "item": {
+                      "type": "Frame",
+                      "width": "100%",
+                      "backgroundColor": "@cardBg",
+                      "borderColor": "@cardBorder",
+                      "borderWidth": 2,
+                      "borderRadius": 12,
+                      "paddingLeft": "9dp",
+                      "paddingRight": "9dp",
+                      "paddingTop": "9dp",
+                      "paddingBottom": "9dp",
+                      "item": {
+                        "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
+                        "items": [
+                          {
+                            "type": "Image",
+                            "width": 64,
+                            "height": 64,
+                            "source": "${programData.upNext[1].image}",
+                            "scale": "fill",
+                            "borderRadius": 9
+                          },
+                          {
+                            "type": "Container",
+                            "direction": "column",
+                            "grow": 1,
+                            "shrink": 1,
+                            "paddingStart": "12dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "style": "cardName",
+                                "text": "${programData.upNext[1].name}",
+                                "maxLines": 2
+                              },
+                              {
+                                "type": "Text",
+                                "style": "cardTime",
+                                "text": "${programData.upNext[1].startTime}",
+                                "when": "${programData.upNext[1].startTime}",
+                                "paddingTop": "4dp"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Container",
+            "direction": "row",
+            "width": "100%",
+            "paddingTop": "18dp",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "bind": [
+              {
+                "name": "isPlaying",
+                "value": "${programData.playing}"
+              }
+            ],
+            "items": [
+              {
+                "type": "TouchWrapper",
+                "onPress": [
+                  {
+                    "when": "${!isPlaying}",
+                    "type": "SendEvent",
+                    "arguments": ["play"]
+                  },
+                  {
+                    "when": "${isPlaying}",
+                    "type": "SendEvent",
+                    "arguments": ["pause"]
+                  },
+                  {
+                    "type": "SetValue",
+                    "property": "isPlaying",
+                    "value": "${!isPlaying}"
+                  }
+                ],
+                "item": {
+                  "type": "Frame",
+                  "width": "170dp",
+                  "backgroundColor": "@redAccent",
+                  "borderRadius": 40,
+                  "paddingTop": "10dp",
+                  "paddingBottom": "10dp",
+                  "item": {
+                    "type": "Container",
+                    "direction": "row",
+                    "width": "100%",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "items": [
+                      {
+                        "type": "AlexaIcon",
+                        "iconName": "${isPlaying ? 'ic_pause' : 'ic_play'}",
+                        "iconColor": "@white",
+                        "iconSize": 18
+                      },
+                      {
+                        "type": "Text",
+                        "style": "buttonText",
+                        "text": "Radio",
+                        "paddingStart": "10dp"
+                      }
+                    ]
+                  }
                 }
-              ]
-            }
-          ]
+              },
+              {
+                "type": "Container",
+                "width": "24dp",
+                "height": "1dp"
+              },
+              {
+                "type": "TouchWrapper",
+                "onPress": [
+                  {
+                    "type": "SendEvent",
+                    "arguments": ["tv"]
+                  }
+                ],
+                "item": {
+                  "type": "Frame",
+                  "width": "170dp",
+                  "backgroundColor": "rgba(255,255,255,0.12)",
+                  "borderColor": "rgba(255,255,255,0.3)",
+                  "borderWidth": 1,
+                  "borderRadius": 40,
+                  "paddingTop": "10dp",
+                  "paddingBottom": "10dp",
+                  "item": {
+                    "type": "Container",
+                    "direction": "row",
+                    "width": "100%",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "items": [
+                      {
+                        "type": "AlexaIcon",
+                        "iconName": "ic_tv",
+                        "iconColor": "@white",
+                        "iconSize": 18
+                      },
+                      {
+                        "type": "Text",
+                        "style": "buttonText",
+                        "text": "TV",
+                        "paddingStart": "10dp"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Frame",
+        "position": "absolute",
+        "top": "26dp",
+        "right": "34dp",
+        "paddingLeft": "14dp",
+        "paddingRight": "14dp",
+        "paddingTop": "5dp",
+        "paddingBottom": "5dp",
+        "backgroundColor": "@redAccent",
+        "borderRadius": 6,
+        "item": {
+          "type": "Text",
+          "style": "liveBadge",
+          "text": "AL AIRE"
         }
+      },
+      {
+        "type": "Frame",
+        "position": "absolute",
+        "top": "62dp",
+        "right": "34dp",
+        "paddingLeft": "12dp",
+        "paddingRight": "12dp",
+        "paddingTop": "4dp",
+        "paddingBottom": "4dp",
+        "backgroundColor": "rgba(255,255,255,0.14)",
+        "borderColor": "rgba(255,255,255,0.3)",
+        "borderWidth": 1,
+        "borderRadius": 6,
+        "when": "${programData.online == false}",
+        "item": {
+          "type": "Text",
+          "style": "liveBadge",
+          "text": "${programData.errorText}"
+        }
+      }
       ]
     }
   }

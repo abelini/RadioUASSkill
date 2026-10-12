@@ -1,356 +1,514 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Montaña Sagrada — Echo Show Mockup</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio UAS — Echo Show Mockup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #0d0d1a;
-    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0d0d1a;
+      font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
 
-  /* ── device body ── */
-  .device {
-    position: relative;
-    padding: 22px;
-    border-radius: 48px;
-    background: linear-gradient(135deg, #1a1a1e, #0a0a0c);
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.8),
-      0 0 0 1px rgba(255,255,255,0.06),
-      inset 0 1px 0 rgba(255,255,255,0.04);
-  }
+    /* ── device body ── */
+    .device {
+      position: relative;
+      padding: 22px;
+      border-radius: 48px;
+      background: linear-gradient(135deg, #1a1a1e, #0a0a0c);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
 
-  /* ── screen ── */
-  .screen {
-    width: 960px;
-    height: 640px;
-    border-radius: 28px;
-    background: #000 url('https://spc.radiouas.org/img/alexa/bg.jpg') center / cover no-repeat;
-    position: relative;
-    overflow: hidden;
-    color: #fff;
-  }
+    /* ── screen ── */
+    .screen {
+      width: 960px;
+      height: 640px;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background: #000;
+    }
 
-  /* dark overlay */
-  .screen::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    pointer-events: none;
-  }
+    /* blurred current cover as backdrop */
+    .backdrop {
+      position: absolute;
+      inset: -40px;
+      background: #000 url('https://assets.radiouas.org/covers/programme-cover-17.jpeg') center / cover no-repeat;
+      filter: blur(16px) brightness(0.42);
+      transform: scale(1.15);
+      z-index: 0;
+    }
 
-  /* subtle glass reflection */
-  .screen::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 2;
-  }
+    .screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.78) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
 
-  /* ── status bar ── */
-  .status-bar {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 36px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-    z-index: 3;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.7);
-    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 100%);
-  }
+    /* ── status bar ── */
+    .status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 5;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+    }
 
-  .status-left {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+    .status-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-  .status-left svg {
-    width: 36px;
-    height: 20px;
-  }
+    .status-left svg {
+      width: 36px;
+      height: 20px;
+    }
 
-  .status-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-  .status-right svg {
-    width: 18px;
-    height: 18px;
-    opacity: 0.7;
-  }
+    .status-right svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.7;
+    }
 
-  .wifi-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #4ade80;
-  }
+    .battery {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-  .battery {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+    .battery-body {
+      width: 24px;
+      height: 12px;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      border-radius: 2px;
+      padding: 1.5px;
+      position: relative;
+    }
 
-  .battery-body {
-    width: 24px;
-    height: 12px;
-    border: 1.5px solid rgba(255,255,255,0.5);
-    border-radius: 2px;
-    padding: 1.5px;
-    position: relative;
-  }
+    .battery-body::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 2px;
+      width: 2.5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 0 1px 1px 0;
+    }
 
-  .battery-body::after {
-    content: '';
-    position: absolute;
-    right: -4px;
-    top: 2px;
-    width: 2.5px;
-    height: 5px;
-    background: rgba(255,255,255,0.5);
-    border-radius: 0 1px 1px 0;
-  }
+    .battery-fill {
+      height: 100%;
+      width: 75%;
+      background: #4ade80;
+      border-radius: 1px;
+    }
 
-  .battery-fill {
-    height: 100%;
-    width: 75%;
-    background: #4ade80;
-    border-radius: 1px;
-  }
+    /* ── layout ── */
+    .content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      padding: 58px 46px 46px;
+    }
 
-  /* ── content ── */
-  .content {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    padding-top: 30px;
-  }
+    .hero {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+      min-height: 0;
+    }
 
-  .logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: #fff url('https://spc.radiouas.org/img/alexa/skill.png') center / cover no-repeat;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    margin-bottom: 6px;
-    border: 2px solid rgba(255,255,255,0.08);
-  }
+    .hero-cover {
+      width: 350px;
+      height: 350px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      background: #111 url('https://assets.radiouas.org/covers/programme-cover-17.jpeg') center / cover no-repeat;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-  .station {
-    font-size: 15px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 22px;
-  }
+    .hero-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 4px;
+    }
 
-  .program {
-    font-size: 58px;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-shadow: 0 4px 40px rgba(0,0,0,0.6);
-    line-height: 1.1;
-    max-width: 80%;
-  }
+    .station {
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 14px;
+    }
 
-  .production {
-    font-size: 24px;
-    color: rgba(255,255,255,0.55);
-    font-weight: 400;
-    margin-top: 8px;
-    margin-bottom: 18px;
-  }
+    .now-name {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: 0.3px;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
 
-  .ptn-badge {
-    display: inline-block;
-    padding: 5px 18px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    background: rgba(15,52,96,0.5);
-    border: 1px solid rgba(15,52,96,0.8);
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 20px;
-  }
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+    }
 
-  .live-badge {
-    position: absolute;
-    top: 42px;
-    right: 24px;
-    padding: 5px 14px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    background: #e94560;
-    color: #fff;
-    z-index: 4;
-  }
+    .category .icon {
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      -webkit-mask: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_news._TTH_.svg') center / contain no-repeat;
+      mask: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_news._TTH_.svg') center / contain no-repeat;
+    }
 
-  /* ── bottom buttons ── */
-  .buttons {
-    position: absolute;
-    bottom: 30px;
-    left: 0; right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    z-index: 3;
-  }
+    .category span {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.75);
+    }
 
-  .btn {
-    padding: 10px 34px;
-    border-radius: 40px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(6px);
-    color: #fff;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: default;
-    transition: background 0.2s;
-  }
+    .meta {
+      margin-top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
 
-  .btn:hover {
-    background: rgba(255,255,255,0.14);
-  }
+    .meta-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
 
-  .btn-primary {
-    background: #e94560;
-    border-color: #e94560;
-  }
+    .meta-label {
+      font-size: 17px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.38);
+      min-width: 120px;
+    }
 
-  .btn-primary:hover {
-    background: #d63851;
-  }
+    .meta-value {
+      font-size: 17px;
+      color: rgba(255, 255, 255, 0.85);
+    }
 
-  /* ── ambient glow ── */
-  .ambient {
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    height: 80px;
-    background: radial-gradient(ellipse, rgba(233,69,96,0.12) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+    .meta-value.time {
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+      font-weight: 600;
+    }
 
-  /* ── alexa wordmark ── */
-  .alexa-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, transparent 30%, rgba(0,168,255,0.5) 50%, transparent 70%);
-    z-index: 3;
-    animation: sweep 3s ease-in-out infinite;
-  }
+    /* ── live badge ── */
+    .live-badge {
+      position: absolute;
+      top: 46px;
+      right: 46px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      background: #e94560;
+      color: #fff;
+      z-index: 5;
+    }
 
-  @keyframes sweep {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.8; }
-  }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
 
-  /* ── device label ── */
-  .device-label {
-    position: absolute;
-    bottom: -30px;
-    left: 0; right: 0;
-    text-align: center;
-    font-size: 11px;
-    color: rgba(255,255,255,0.12);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+    @keyframes pulse {
 
-</style>
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.35;
+      }
+    }
+
+    /* ── up next ── */
+    .upnext {
+      flex: 0 0 auto;
+      margin-top: 22px;
+    }
+
+    .upnext-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 8px 0 20px;
+    }
+
+    .upnext-row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(6px);
+    }
+
+    .card-cover {
+      width: 66px;
+      height: 66px;
+      flex: 0 0 auto;
+      border-radius: 9px;
+      background: #111 center / cover no-repeat;
+    }
+
+    .card-body {
+      min-width: 0;
+    }
+
+    .card-name {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.15;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .card-time {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: #e94560;
+    }
+
+    /* ── buttons ── */
+    .buttons {
+      flex: 0 0 auto;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 30px;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .btn .icon {
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      -webkit-mask: center / contain no-repeat;
+      mask: center / contain no-repeat;
+    }
+
+    .btn-radio .icon {
+      -webkit-mask-image: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_play._TTH_.svg');
+      mask-image: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_play._TTH_.svg');
+    }
+
+    .btn-tv .icon {
+      -webkit-mask-image: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_tv._TTH_.svg');
+      mask-image: url('https://m.media-amazon.com/images/G/01/mobile-apps/dex/ask-apl/icon-library/ic_tv._TTH_.svg');
+    }
+
+    .btn-primary {
+      background: #e94560;
+      border-color: #e94560;
+    }
+
+    /* ── device label ── */
+    .device-label {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.12);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="device">
-  <div class="screen">
+  <div class="device">
+    <div class="screen">
 
-    <!-- status bar -->
-    <div class="status-bar">
-      <div class="status-left">
-        <svg viewBox="0 0 36 20" fill="none">
-          <circle cx="10" cy="10" r="3" fill="rgba(255,255,255,0.7)"/>
-          <circle cx="18" cy="10" r="4" fill="rgba(255,255,255,0.4)"/>
-          <circle cx="28" cy="10" r="5" fill="rgba(255,255,255,0.2)"/>
-        </svg>
-        <span>10:28</span>
-      </div>
-      <div class="status-right">
-        <svg viewBox="0 0 18 18" fill="none">
-          <rect x="1" y="6" width="3" height="8" rx="0.8" fill="rgba(255,255,255,0.6)"/>
-          <rect x="5.5" y="4" width="3" height="10" rx="0.8" fill="rgba(255,255,255,0.6)"/>
-          <rect x="10" y="2" width="3" height="12" rx="0.8" fill="rgba(255,255,255,0.6)"/>
-          <rect x="14.5" y="1" width="3" height="13" rx="0.8" fill="rgba(255,255,255,0.6)"/>
-        </svg>
-        <div class="battery">
-          <div class="battery-body">
-            <div class="battery-fill"></div>
+      <!-- blurred current cover backdrop -->
+      <div class="backdrop"></div>
+
+      <!-- status bar -->
+      <div class="status-bar">
+        <div class="status-left">
+          <svg viewBox="0 0 36 20" fill="none">
+            <circle cx="10" cy="10" r="3" fill="rgba(255,255,255,0.7)" />
+            <circle cx="18" cy="10" r="4" fill="rgba(255,255,255,0.4)" />
+            <circle cx="28" cy="10" r="5" fill="rgba(255,255,255,0.2)" />
+          </svg>
+          <span>08:53</span>
+        </div>
+        <div class="status-right">
+          <svg viewBox="0 0 18 18" fill="none">
+            <rect x="1" y="6" width="3" height="8" rx="0.8" fill="rgba(255,255,255,0.6)" />
+            <rect x="5.5" y="4" width="3" height="10" rx="0.8" fill="rgba(255,255,255,0.6)" />
+            <rect x="10" y="2" width="3" height="12" rx="0.8" fill="rgba(255,255,255,0.6)" />
+            <rect x="14.5" y="1" width="3" height="13" rx="0.8" fill="rgba(255,255,255,0.6)" />
+          </svg>
+          <div class="battery">
+            <div class="battery-body">
+              <div class="battery-fill"></div>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- live badge -->
+      <div class="live-badge"><span class="live-dot"></span>Al aire</div>
+
+      <!-- content -->
+      <div class="content">
+
+        <!-- hero: cover left / info right -->
+        <div class="hero">
+          <div class="hero-cover"></div>
+          <div class="hero-info">
+            <div class="station">Radio UAS &middot; Frecuencia de la cultura viva</div>
+            <div class="now-name">Punto universitario</div>
+            <div class="category">
+              <div class="icon"></div>
+              <span>Periodismo</span>
+            </div>
+            <div class="meta">
+              <div class="meta-row">
+                <span class="meta-label">Producci&oacute;n:</span>
+                <span class="meta-value">Wilfrido Ibarra Escobar</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">Horario:</span>
+                <span class="meta-value time">07:50 &ndash; 09:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- up next -->
+        <div class="upnext">
+          <div class="upnext-title">A continuaci&oacute;n</div>
+          <div class="upnext-row">
+            <div class="card">
+              <div class="card-cover"
+                style="background-image:url('https://assets.radiouas.org/covers/programme-cover-99.jpeg')"></div>
+              <div class="card-body">
+                <div class="card-name">Paisajes sonoros</div>
+                <div class="card-time">09:00</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-cover"
+                style="background-image:url('https://assets.radiouas.org/covers/programme-cover-36.jpeg')"></div>
+              <div class="card-body">
+                <div class="card-name">Mu&eacute;velos: cuerpo, mente y coraz&oacute;n</div>
+                <div class="card-time">09:30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- buttons -->
+        <div class="buttons">
+          <div class="btn btn-radio btn-primary">
+            <div class="icon"></div>Radio
+          </div>
+          <div class="btn btn-tv">
+            <div class="icon"></div>TV
+          </div>
+        </div>
+
+      </div>
+
     </div>
-
-    <!-- ambient glow -->
-    <div class="ambient"></div>
-
-    <!-- live badge -->
-    <div class="live-badge">LIVE</div>
-
-    <!-- content -->
-    <div class="content">
-      <div class="logo"></div>
-      <div class="station">RADIO UAS &#x00B7; Frecuencia de la cultura viva</div>
-      <div class="program">La Monta&#xF1;a Sagrada</div>
-      <div class="production">Roberto Fernandez</div>
-      <div class="ptn-badge">Rock</div>
-    </div>
-
-    <!-- bottom buttons -->
-    <div class="buttons">
-      <div class="btn btn-primary">&#x25B6; Radio</div>
-      <div class="btn">&#x1F4FA; TV</div>
-    </div>
-
-    <!-- alexa bar -->
-    <div class="alexa-bar"></div>
-
+    <div class="device-label">Echo Show 8 &quot; &middot; 960 &times; 640</div>
   </div>
-  <div class="device-label">Echo Show 8 &quot;</div>
-</div>
 
 </body>
+
 </html>
